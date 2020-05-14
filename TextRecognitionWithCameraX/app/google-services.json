@@ -1,42 +1,42 @@
 {
   "project_info": {
-    "project_number": "324418969135",
-    "firebase_url": "https://int-elligence-project.firebaseio.com",
-    "project_id": "int-elligence-project",
-    "storage_bucket": "int-elligence-project.appspot.com"
+    "project_number": "832823311887",
+    "firebase_url": "https://text-recog-with-graphicoverlay.firebaseio.com",
+    "project_id": "text-recog-with-graphicoverlay",
+    "storage_bucket": "text-recog-with-graphicoverlay.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:324418969135:android:d4a3c3afd03d83dee8b0da",
+        "mobilesdk_app_id": "1:832823311887:android:5187e715e1db0ebc3aad7a",
         "android_client_info": {
-          "package_name": "com.example.textrecogniionm"
+          "package_name": "com.example.textrecognitionwithgraphicoverlay"
         }
       },
       "oauth_client": [
         {
-          "client_id": "324418969135-6ikahmld9a878r14qa85gofllj06f7f7.apps.googleusercontent.com",
+          "client_id": "832823311887-f73t134mpipcq4957no9guafneofms9p.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.textrecogniionm",
+            "package_name": "com.example.textrecognitionwithgraphicoverlay",
             "certificate_hash": "5c866668346cecd4d263c8baffb747e02d6dee33"
           }
         },
         {
-          "client_id": "324418969135-5rd8s576k75hl925adr0fnevkkruigfn.apps.googleusercontent.com",
+          "client_id": "832823311887-d488mphi02u61phobv9hlkngds4f5k6b.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyC9kYgOb59yass18zdLh8U0KwarSU36CB8"
+          "current_key": "AIzaSyAcZzqSgCh2P4GN9Va8jP087-F65KtwPlE"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "324418969135-5rd8s576k75hl925adr0fnevkkruigfn.apps.googleusercontent.com",
+              "client_id": "832823311887-d488mphi02u61phobv9hlkngds4f5k6b.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

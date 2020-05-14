@@ -1,4 +1,4 @@
-package com.example.textrecogniionm;
+package com.example.textrecognitionwithgraphicoverlay;
 
 import org.junit.Test;
 

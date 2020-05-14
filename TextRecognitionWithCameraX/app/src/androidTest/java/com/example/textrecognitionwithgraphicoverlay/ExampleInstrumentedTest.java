@@ -1,4 +1,4 @@
-package com.example.textrecogniionm;
+package com.example.textrecognitionwithgraphicoverlay;
 
 import android.content.Context;
 
@@ -22,6 +22,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
 
-        assertEquals("com.example.textrecogniionm", appContext.getPackageName());
+        assertEquals("com.example.textrecognitionwithgraphicoverlay", appContext.getPackageName());
     }
 }

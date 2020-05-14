@@ -1,2 +1,2 @@
-rootProject.name='Text Recogniionm'
+rootProject.name='TextRecognition With Graphic Overlay'
 include ':app'
