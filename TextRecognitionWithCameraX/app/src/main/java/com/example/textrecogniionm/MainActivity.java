@@ -1,33 +1,48 @@
-package com.example.textrecognitionwithcamerax;
+package com.example.textrecogniionm;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.camera.core.CameraX;
 import androidx.camera.core.FlashMode;
+import androidx.camera.core.ImageAnalysis;
+import androidx.camera.core.ImageAnalysisConfig;
 import androidx.camera.core.ImageCapture;
 import androidx.camera.core.ImageCaptureConfig;
+import androidx.camera.core.ImageProxy;
 import androidx.camera.core.Preview;
 import androidx.camera.core.PreviewConfig;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Camera;
+import android.graphics.ImageFormat;
 import android.graphics.Matrix;
+import android.graphics.Point;
+import android.graphics.Rect;
+import android.graphics.YuvImage;
+import android.media.Image;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.util.Rational;
 import android.util.Size;
 import android.view.Surface;
 import android.view.SurfaceHolder;
+import android.view.SurfaceView;
 import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,41 +53,46 @@ import com.google.firebase.ml.vision.FirebaseVision;
 import com.google.firebase.ml.vision.common.FirebaseVisionImage;
 import com.google.firebase.ml.vision.text.FirebaseVisionText;
 import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer;
+import com.google.firebase.ml.vision.text.RecognizedLanguage;
 
+import org.w3c.dom.Text;
+
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.nio.Buffer;
+import java.nio.ByteBuffer;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
+import java.util.UUID;
+
+import static android.os.Environment.getExternalStorageDirectory;
+import static android.os.Environment.getExternalStorageState;
 
 public class MainActivity extends AppCompatActivity {
-
     private Button detectBtn,speak;
     private TextView display;
+//    private ImageView imagedis;
     private TextureView textureView;
     private Bitmap imageBitmap;
     private TextToSpeech mTTS;
+    static final int REQUEST_IMAGE_CAPTURE = 1;    //from the android dev website
     private int REQUEST_CODE_PERMISSIONS = 101;
     private String[] REQUIRED_PERMISSIONS = new String[]{"android.permission.CAMERA","android.permission.WRITE_EXTERNAL_STORAGE"};
-    Random rand = new Random();
+    String flash = "OFF";
     File file;
+    Random rand = new Random();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        getSupportActionBar().hide();
+//        imagedis = findViewById(R.id.image);
         speak = findViewById(R.id.speak);
         detectBtn = findViewById(R.id.detect_image);
         textureView = findViewById(R.id.view_findrer);
         display = findViewById(R.id.text_display);
-
-        if(allPermissionsGranted()){
-            startCamera();
-        } else {
-            ActivityCompat.requestPermissions(this,REQUIRED_PERMISSIONS,REQUEST_CODE_PERMISSIONS);
-        }
-
         mTTS = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int status) {
@@ -89,6 +109,32 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        getSupportActionBar().hide();
+        textureView = (TextureView) findViewById(R.id.view_findrer);
+        if(allPermissionsGranted()){
+            startCamera();
+        } else {
+            ActivityCompat.requestPermissions(this,REQUIRED_PERMISSIONS,REQUEST_CODE_PERMISSIONS);
+        }
+
+//        captureBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//
+//            }
+//        });
+
+        detectBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                imageBitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+                detectTextFromImg();
+                file.delete();
+            }
+
+        });
+
         speak.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -96,12 +142,23 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        detectBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                detectTextFromImg();
-            }
-        });
+    }
+
+
+    private void speak(){
+        String text = display.getText().toString();
+        mTTS.setPitch(1);
+        mTTS.setSpeechRate(1);
+        mTTS.speak(text,TextToSpeech.QUEUE_FLUSH,null);
+    }
+
+    @Override
+    protected void onDestroy() {
+        if(mTTS !=null){
+            mTTS.stop();
+            mTTS.shutdown();
+        }
+        super.onDestroy();
     }
 
     private void startCamera() {
@@ -123,20 +180,26 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-///to store in external
-        ImageCaptureConfig imageCaptureConfig = new ImageCaptureConfig.Builder().setCaptureMode(ImageCapture.CaptureMode.MAX_QUALITY).
-                setTargetRotation(getWindowManager().getDefaultDisplay().getRotation()).setFlashMode(FlashMode.OFF).build();   ///setflashMode()  this turn s on flash
+        ImageCaptureConfig imageCaptureConfig = new ImageCaptureConfig.Builder().setCaptureMode(ImageCapture.CaptureMode.MIN_LATENCY).
+                setTargetRotation(getWindowManager().getDefaultDisplay().getRotation()).setFlashMode(FlashMode.valueOf(flash)).build();   ///setflashMode()  this controls flash
         final ImageCapture imgCap = new ImageCapture(imageCaptureConfig);
         findViewById(R.id.capture_image).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                file = null;
-                try {
-                    file = File.createTempFile("Image"+ new Random().nextInt(20) ,".jpg");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                file.deleteOnExit();
+//                file = null;
+//                File file1 = new File()
+//                file = new File("/sdcard/Images/test_image.jpg");   ///creating an img file at a random location
+                //                file.deleteOnExit();
+//                file = new File(getExternalStorageDirectory(), "Image"+ rand.nextInt(10) +".jpg");  /////////////////to save in sd card external
+                file = new File(getFilesDir(), "Image"+ rand.nextInt(10) +".jpg");
+//                imgCap.takePicture(new ImageCapture.OnImageCapturedListener() {
+//                    @Override
+//                    public void onCaptureSuccess(ImageProxy image, int rotationDegrees) {
+////                        super.onCaptureSuccess(image, rotationDegrees);
+//                        imagedis.setImageBitmap(toBitmap(image.getImage()));
+//
+//                    }
+//                });
                 imgCap.takePicture(file, new ImageCapture.OnImageSavedListener() {
                     @Override
                     public void onImageSaved(@NonNull File file) {
@@ -154,14 +217,43 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                 });
-                imageBitmap = (Bitmap) BitmapFactory.decodeFile(file.getAbsolutePath());
+
             }
         });
 
         CameraX.bindToLifecycle(this,preview,imgCap);///here we are binding preview and imagecaptured to th lifecycle of the activity
 
     }
+    private void detectTextFromImg() {    ////firebase method to get text from bitmap image, refer documentation for reference
+        FirebaseVisionImage firebaseVisionImage = FirebaseVisionImage.fromBitmap(imageBitmap);
+        FirebaseVisionTextRecognizer detector = FirebaseVision.getInstance().getOnDeviceTextRecognizer();
+        Task<FirebaseVisionText> result = detector.processImage(firebaseVisionImage).addOnSuccessListener(new OnSuccessListener<FirebaseVisionText>() {
+            @Override
+            public void onSuccess(FirebaseVisionText firebaseVisionText) {
+                displayTextMessage(firebaseVisionText);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(MainActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.d("Error",e.getMessage());
+            }
+        });
+    }
+    private void displayTextMessage(FirebaseVisionText firebaseVisionText) {
+        List<FirebaseVisionText.TextBlock> blockList=firebaseVisionText.getTextBlocks();
+        if (blockList.size()==0){
+            Toast.makeText(this, "No Text Detected", Toast.LENGTH_SHORT).show();
+        }
+        else{
+            for(FirebaseVisionText.TextBlock block : firebaseVisionText.getTextBlocks()){
+                String text = block.getText();
+                display.setText(text);
+                file.delete();
+            }
+        }
 
+    }
 
     private void updateTransform() {  //to update preview when phone is moved
         Matrix mx = new Matrix();
@@ -193,7 +285,6 @@ public class MainActivity extends AppCompatActivity {
         textureView.setTransform(mx);
     }
 
-
     private boolean allPermissionsGranted() {   //to check if all permissions are granted
         for(String permission : REQUIRED_PERMISSIONS){
             if(ContextCompat.checkSelfPermission(this,permission)!= PackageManager.PERMISSION_GRANTED){
@@ -203,46 +294,34 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    private Bitmap toBitmap(Image image) {
+        Image.Plane[] planes = image.getPlanes();
+        ByteBuffer yBuffer = planes[0].getBuffer();
+        ByteBuffer uBuffer = planes[1].getBuffer();
+        ByteBuffer vBuffer = planes[2].getBuffer();
 
-    private void speak(){
-        String text = display.getText().toString();
-        mTTS.setPitch(1);
-        mTTS.setSpeechRate(1);
-        mTTS.speak(text,TextToSpeech.QUEUE_FLUSH,null);
-    }
+        int ySize = yBuffer.remaining();
+        int uSize = uBuffer.remaining();
+        int vSize = vBuffer.remaining();
 
+        byte[] nv21 = new byte[ySize + uSize + vSize];
+        //U and V are swapped
+        yBuffer.get(nv21, 0, ySize);
+        vBuffer.get(nv21, ySize, vSize);
+        uBuffer.get(nv21, ySize + vSize, uSize);
 
-    private void detectTextFromImg() {
-        FirebaseVisionImage firebaseVisionImage = FirebaseVisionImage.fromBitmap(imageBitmap);
-        FirebaseVisionTextRecognizer detector = FirebaseVision.getInstance().getOnDeviceTextRecognizer();
-        Task<FirebaseVisionText> result = detector.processImage(firebaseVisionImage).addOnSuccessListener(new OnSuccessListener<FirebaseVisionText>() {
-            @Override
-            public void onSuccess(FirebaseVisionText firebaseVisionText) {
-                displayTextMessage(firebaseVisionText);
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(MainActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                Log.d("Error",e.getMessage());
-            }
-        });
-    }
+        YuvImage yuvImage = new YuvImage(nv21, ImageFormat.NV21, image.getWidth(), image.getHeight(), null);
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        yuvImage.compressToJpeg(new Rect(0, 0, yuvImage.getWidth(), yuvImage.getHeight()), 75, out);
 
-
-    private void displayTextMessage(FirebaseVisionText firebaseVisionText) {
-        List<FirebaseVisionText.TextBlock> blockList=firebaseVisionText.getTextBlocks();
-        if (blockList.size()==0){
-            Toast.makeText(this, "No Text Detected", Toast.LENGTH_SHORT).show();
-        }
-        else{
-            for(FirebaseVisionText.TextBlock block : firebaseVisionText.getTextBlocks()){
-                String text = block.getText();
-                display.setText(text);
-                file.delete();
-            }
-        }
-
+        byte[] imageBytes = out.toByteArray();
+        return BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
     }
 
 }
+
+
+
+
+
+

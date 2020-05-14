@@ -1,42 +1,42 @@
 {
   "project_info": {
-    "project_number": "409684683122",
-    "firebase_url": "https://textrecognition-with-camerax.firebaseio.com",
-    "project_id": "textrecognition-with-camerax",
-    "storage_bucket": "textrecognition-with-camerax.appspot.com"
+    "project_number": "324418969135",
+    "firebase_url": "https://int-elligence-project.firebaseio.com",
+    "project_id": "int-elligence-project",
+    "storage_bucket": "int-elligence-project.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:409684683122:android:b7fac5e9142376a79d15eb",
+        "mobilesdk_app_id": "1:324418969135:android:d4a3c3afd03d83dee8b0da",
         "android_client_info": {
-          "package_name": "com.example.textrecognitionwithcamerax"
+          "package_name": "com.example.textrecogniionm"
         }
       },
       "oauth_client": [
         {
-          "client_id": "409684683122-dh5ehlcucrl77u7nd5grpe30nhu9r26f.apps.googleusercontent.com",
+          "client_id": "324418969135-6ikahmld9a878r14qa85gofllj06f7f7.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.textrecognitionwithcamerax",
+            "package_name": "com.example.textrecogniionm",
             "certificate_hash": "5c866668346cecd4d263c8baffb747e02d6dee33"
           }
         },
         {
-          "client_id": "409684683122-4cjo8njkpb8gvlo7nqcb4b872i7j3r5j.apps.googleusercontent.com",
+          "client_id": "324418969135-5rd8s576k75hl925adr0fnevkkruigfn.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCs8oWjGNu5ybn6QFeDVyT2TyIjnxkcRfs"
+          "current_key": "AIzaSyC9kYgOb59yass18zdLh8U0KwarSU36CB8"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "409684683122-4cjo8njkpb8gvlo7nqcb4b872i7j3r5j.apps.googleusercontent.com",
+              "client_id": "324418969135-5rd8s576k75hl925adr0fnevkkruigfn.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
