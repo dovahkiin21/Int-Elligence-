@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">TextRecognition With Graphic Overlay</string>
+    
+    <string-array name="features">
+        <item>Text Detection</item>
+        <item>Image Labelling</item>
+        <item>Object Detection</item>
+    </string-array>
+</resources>
