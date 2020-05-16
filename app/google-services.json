@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "305186208157",
+    "firebase_url": "https://oculus---an-app-for-the-blind.firebaseio.com",
+    "project_id": "oculus---an-app-for-the-blind",
+    "storage_bucket": "oculus---an-app-for-the-blind.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:305186208157:android:920188ee82bbc552501774",
+        "android_client_info": {
+          "package_name": "com.example.oculus"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "305186208157-12qjpo5tm0ukuud1coiea9r43fu09spe.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.oculus",
+            "certificate_hash": "5c866668346cecd4d263c8baffb747e02d6dee33"
+          }
+        },
+        {
+          "client_id": "305186208157-hivg5klqec6to389qme5g4auuglj59ec.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB0uzUnd0ZiaoCe4CM9VtDggEhHPl3Vik4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "305186208157-hivg5klqec6to389qme5g4auuglj59ec.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
