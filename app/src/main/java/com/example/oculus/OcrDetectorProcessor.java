@@ -25,10 +25,10 @@ public class OcrDetectorProcessor implements Detector.Processor<TextBlock>{
     @Override
     public void release() {
         graphicOverlay.clear();
-    }
+    }     //clears the graphic overlay
 
     @Override
-    public void receiveDetections(Detector.Detections<TextBlock> detections) {
+    public void receiveDetections(Detector.Detections<TextBlock> detections) {    //receives the text and draws it on our overlay
         graphicOverlay.clear();
         SparseArray<TextBlock> items = detections.getDetectedItems();
         for (int i = 0; i < items.size(); ++i) {

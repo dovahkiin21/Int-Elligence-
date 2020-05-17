@@ -16,64 +16,66 @@
         android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/textRecon"
-        android:contentDescription="Text Detection"
-        android:hapticFeedbackEnabled="true"
         android:layout_width="138dp"
         android:layout_height="159dp"
         android:layout_marginEnd="16dp"
         android:background="@drawable/text_button"
+        android:contentDescription="Text Detection"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.507"
+        app:layout_constraintHorizontal_bias="0.056"
         app:layout_constraintStart_toStartOf="@+id/guideline4"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.295" />
+        app:layout_constraintVertical_bias="0.46" />
 
     <Button
         android:id="@+id/objectDetc"
-        android:contentDescription="Object Detection"
         android:layout_width="138dp"
         android:layout_height="159dp"
         android:layout_marginStart="16dp"
         android:background="@drawable/object_button"
+        android:contentDescription="Object Detection"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline4"
-        app:layout_constraintHorizontal_bias="0.50"
+        app:layout_constraintHorizontal_bias="0.132"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.295" />
+        app:layout_constraintVertical_bias="0.46" />
 
     <Button
         android:id="@+id/voiceCom"
-        android:contentDescription="Voice Assistant"
         android:layout_width="138dp"
         android:layout_height="159dp"
         android:layout_marginStart="16dp"
         android:background="@drawable/voice_button"
+        android:contentDescription="Voice Assistant"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline4"
+        app:layout_constraintHorizontal_bias="0.952"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.71000004" />
+        app:layout_constraintVertical_bias="0.46" />
 
     <Button
         android:id="@+id/settings"
-        android:contentDescription="Settings"
         android:layout_width="138dp"
         android:layout_height="159dp"
         android:layout_marginEnd="16dp"
         android:background="@drawable/settings"
+        android:contentDescription="Settings"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.895"
         app:layout_constraintStart_toStartOf="@+id/guideline4"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.71000004" />
+        app:layout_constraintVertical_bias="0.46" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline4"
@@ -82,7 +84,7 @@
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintGuide_percent="0.50121653"
+        app:layout_constraintGuide_percent="0.500684"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
