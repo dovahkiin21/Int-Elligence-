@@ -171,7 +171,7 @@ public class ObjectDetection extends AppCompatActivity {
                 });
     }
 
-    private void processDataResult(List<FirebaseVisionImageLabel> labels) throws InterruptedException {                         //to display labels
+    private void processDataResult(List<FirebaseVisionImageLabel> labels) throws InterruptedException {                         //To display labels
 
         for (FirebaseVisionImageLabel label: labels) {
             float confidence = label.getConfidence();
