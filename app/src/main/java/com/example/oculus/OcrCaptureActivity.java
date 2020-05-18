@@ -25,6 +25,8 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -73,6 +75,8 @@ public final class OcrCaptureActivity extends AppCompatActivity {
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
         setContentView(R.layout.ocr_capture);
+        Window window = getWindow();
+        window.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION,WindowManager.LayoutParams.TYPE_STATUS_BAR);
 
         preview = (CameraSourcePreview) findViewById(R.id.preview);
         graphicOverlay = (GraphicOverlay<OcrGraphic>) findViewById(R.id.graphicOverlay);
@@ -214,6 +218,7 @@ public final class OcrCaptureActivity extends AppCompatActivity {
         if (preview != null) {
             preview.release();
         }
+
     }
 
     /**
@@ -308,7 +313,9 @@ public final class OcrCaptureActivity extends AppCompatActivity {
             text = graphic.getTextBlock();
             if (text != null && text.getValue() != null) {
                 Log.d(TAG, "text data is being spoken! " + text.getValue());
-                // Speak the string.
+                // Speak the string/text detected.
+                tts.setSpeechRate(0.8f);
+                tts.setPitch(1);
                 tts.speak(text.getValue(), TextToSpeech.QUEUE_ADD, null, "DEFAULT");
             }
             else {
@@ -320,6 +327,9 @@ public final class OcrCaptureActivity extends AppCompatActivity {
         }
         return text != null;
     }
+
+
+
 
     private class CaptureGestureListener extends GestureDetector.SimpleOnGestureListener {
 
@@ -384,4 +394,6 @@ public final class OcrCaptureActivity extends AppCompatActivity {
             }
         }
     }
+
+
 }
