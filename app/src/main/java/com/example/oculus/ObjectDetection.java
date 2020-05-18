@@ -175,25 +175,29 @@ public class ObjectDetection extends AppCompatActivity {
 
     private void processDataResult(List<FirebaseVisionImageLabel> labels) throws InterruptedException {         //to display labels
 
-        for (FirebaseVisionImageLabel label: labels) {
-            float confidence = label.getConfidence();
-            if (confidence >= 0.68){
-                String text = label.getText();
-                display.append(text + " " + "or" + " ");
+        if(labels != null) {                                    //if labels are present
+            for (FirebaseVisionImageLabel label: labels) {
+                float confidence = label.getConfidence();
+                if (confidence >= 0.68){
+                    String text = label.getText();
+                    display.append(text + " " + "or" + " ");
+                }
             }
+            //to handle last "or"
+            String string1 = display.getText().toString();
+            String string2 = string1.substring(0,string1.length()-1);
+            string1 = string2.substring(0,string2.length()-1);
+            string2 = string1.substring(0,string1.length()-1);
+            display.setText(string2);
+
         }
-                    //to handle last "or"
-        String string1 = display.getText().toString();
-        String string2 = string1.substring(0,string1.length()-1);
-        string1 = string2.substring(0,string2.length()-1);
-        string2 = string1.substring(0,string1.length()-1);
-        display.setText(string2);
+        else {                                                  //if labels are null
+            display.setText("No Objects Detected!");
+        }
 
         if(waitingDialogue.isShowing())                                                             //to remove waiting dialogue
             waitingDialogue.dismiss();
-
-        voiceOutput();                                                                              //to give voice output of detected labels
-
+        voiceOutput();         //to give voice output of detected labels
     }
 
     /*To handle orientation changes
